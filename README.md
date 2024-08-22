@@ -1,23 +1,40 @@
 import requests
+import base64
 
 # GitHub kişisel erişim token'ınızı buraya girin
 token = "your_github_token"
 
-# GitHub kullanıcı adı ve depo adı
+# Kullanıcı adınız ve depo adınız
 username = "your_github_username"
 repo = "your_repo_name"
 
-# README dosyası için içerik
-readme_content = """
-# My Awesome Project
+# Oluşturulacak dosyanın yolu ve adı
+file_path = "example.txt"
 
-This project is awesome because it solves a problem efficiently.
+# Dosyaya eklenecek içerik
+content = "MERHABA SERAPİS, GitHub!"
 
-## Features
-- Feature 1
-- Feature 2
-- Feature 3
+# Base64 formatına dönüştürme
+content_encoded = base64.b64encode(content.encode("utf-8")).decode("utf-8")
 
-## Installation
-```bash
-git clone https://github.com/{username}/{repo}.git
+# GitHub API URL'si
+url = f"https://api.github.com/repos/{username}/{repo}/contents/{file_path}"
+
+# API'ye gönderilecek veri
+data = {
+    "message": "Add example.txt",
+    "content": content_encoded,
+}
+
+# API isteğini gerçekleştirme
+response = requests.put(url, json=data, headers={
+    "Authorization": f"token {token}",
+    "Accept": "application/vnd.github.v3+json"
+})
+
+# Sonuç
+if response.status_code == 201:
+    print("Dosya başarıyla oluşturuldu!")
+else:
+    print("Dosya oluşturulamadı.")
+    print(response.json())
