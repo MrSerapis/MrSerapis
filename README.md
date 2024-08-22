@@ -18,7 +18,7 @@ content = "MERHABA SERAPİS, GitHub!"
 content_encoded = base64.b64encode(content.encode("utf-8")).decode("utf-8")
 
 # GitHub API URL'si
-url = f"https://api.github.com/repos/{username}/{repo}/contents/{file_path}"
+url = "https://api.github.com/repos/{username}/{repo}/contents/{file_path}"
 
 # API'ye gönderilecek veri
 data = {
